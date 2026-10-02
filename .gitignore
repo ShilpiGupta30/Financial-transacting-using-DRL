@@ -1,0 +1,27 @@
+# C++ Build Artifacts
+build/
+bin/
+*.o
+*.a
+*.so
+*.dll
+*.exe
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+env/
+.env
+
+# Node/Frontend
+node_modules/
+dist/
+
+# OS/IDE
+.DS_Store
+.vscode/
+.idea/
+*.suo
+*.sln
