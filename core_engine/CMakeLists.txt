@@ -11,6 +11,7 @@ set(SOURCES
     src/main.cpp
     src/transaction/PCB.cpp
     src/scheduler/Scheduler.cpp
+    src/resource/ResourceManager.cpp
 )
 
 add_executable(IntelligentResourceManager ${SOURCES})
@@ -25,8 +26,15 @@ add_executable(test_scheduler
     src/transaction/PCB.cpp
 )
 
+add_executable(test_resource_manager
+    tests/test_resource_manager.cpp
+    src/resource/ResourceManager.cpp
+    src/transaction/PCB.cpp
+)
+
 enable_testing()
 add_test(NAME pcb_tests COMMAND test_pcb)
 add_test(NAME scheduler_tests COMMAND test_scheduler)
+add_test(NAME resource_manager_tests COMMAND test_resource_manager)
 
 # Future: Add Google Test, MySQL connector paths, etc.
