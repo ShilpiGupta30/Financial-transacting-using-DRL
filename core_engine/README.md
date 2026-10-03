@@ -33,4 +33,8 @@ Priority scheduling chooses the largest `PCB::priority` value first. When priori
 
 ## Basic Resource Management
 
-The resource manager tracks named resources by ID, including their total and available units. A process allocates units through the manager; successful allocations are recorded against that PCB's process ID and reduce availability. A process can release only units it previously allocated, which returns those units to availability. Allocation and release requests with invalid quantities or insufficient holdings are rejected. Mutexes, semaphores, synchronization, and deadlock detection are not implemented yet.
+The resource manager tracks named resources by ID, including their total and available units. A process allocates units through the manager; successful allocations are recorded against that PCB's process ID and reduce availability. A process can release only units it previously allocated, which returns those units to availability. Allocation and release requests with invalid quantities or insufficient holdings are rejected. Deadlock detection is not implemented yet.
+
+## Basic Synchronization
+
+A mutex provides exclusive access to a shared resource: one PCB locks it, and only that owner can unlock it. A counting semaphore tracks a bounded number of available permits; processes wait to acquire a permit and signal to return one. These simple simulation objects let processes coordinate access to shared resources. Deadlock detection is not implemented yet.
