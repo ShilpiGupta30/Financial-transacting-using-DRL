@@ -10,11 +10,23 @@ include_directories(include)
 set(SOURCES
     src/main.cpp
     src/transaction/PCB.cpp
+    src/scheduler/Scheduler.cpp
 )
 
 add_executable(IntelligentResourceManager ${SOURCES})
 
 # Basic PCB Tests
 add_executable(test_pcb tests/test_pcb.cpp src/transaction/PCB.cpp)
+
+# Baseline scheduling algorithm tests
+add_executable(test_scheduler
+    tests/test_scheduler.cpp
+    src/scheduler/Scheduler.cpp
+    src/transaction/PCB.cpp
+)
+
+enable_testing()
+add_test(NAME pcb_tests COMMAND test_pcb)
+add_test(NAME scheduler_tests COMMAND test_scheduler)
 
 # Future: Add Google Test, MySQL connector paths, etc.

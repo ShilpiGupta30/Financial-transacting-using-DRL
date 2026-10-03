@@ -24,3 +24,9 @@ The PCB can move through the following standard OS states:
 - **WAITING**: Process is blocked (e.g., waiting for an I/O operation or a resource lock).
 - **COMPLETED**: Process execution finished successfully.
 - **FAILED**: Process execution aborted (e.g., due to a deadlock or a failed business logic like insufficient funds).
+
+## Baseline CPU Schedulers
+
+The core engine provides FCFS, Round Robin, and non-preemptive Priority scheduling. Each scheduler accepts the existing `PCB` objects and returns completion, waiting, and turnaround times in the same order as the input list. A scheduling run resets each PCB's remaining time and state before it begins.
+
+Priority scheduling chooses the largest `PCB::priority` value first. When priorities are equal, it chooses the earlier arrival; input order breaks any remaining tie. Round Robin uses the configured positive time quantum and a FIFO ready queue.
