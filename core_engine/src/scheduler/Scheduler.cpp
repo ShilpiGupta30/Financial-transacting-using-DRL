@@ -1,9 +1,9 @@
 #include "Scheduler.hpp"
 
-#include <algorithm>
-#include <queue>
-#include <stdexcept>
-#include <vector>
+#include<algorithm>
+#include<queue>
+#include<stdexcept>
+#include<vector>
 
 namespace {
 
@@ -16,7 +16,7 @@ void prepareProcesses(std::vector<PCB>& processes) {
 
     // A scheduling run starts every supplied PCB from its original burst time.
     for (PCB& process : processes) {
-        process.remainingTime = process.burstTime;
+        process.remainingTime=process.burstTime;
         process.changeState(ProcessState::NEW);
     }
 }
@@ -29,7 +29,7 @@ void recordCompletion(const PCB& process,
                       std::size_t inputIndex,
                       int completionTime,
                       std::vector<SchedulingResult>& results) {
-    results[inputIndex] = SchedulingResult{
+    results[inputIndex]=SchedulingResult{
         process.processID,
         completionTime,
         completionTime - process.arrivalTime - process.burstTime,
@@ -39,8 +39,8 @@ void recordCompletion(const PCB& process,
 
 std::vector<std::size_t> arrivalOrder(const std::vector<PCB>& processes) {
     std::vector<std::size_t> order(processes.size());
-    for (std::size_t index = 0; index < processes.size(); ++index) {
-        order[index] = index;
+    for (std::size_t index=0; index < processes.size(); ++index) {
+        order[index]=index;
     }
 
     std::stable_sort(order.begin(), order.end(), [&processes](std::size_t left, std::size_t right) {
@@ -53,14 +53,14 @@ std::vector<std::size_t> arrivalOrder(const std::vector<PCB>& processes) {
 
 std::vector<SchedulingResult> FCFSScheduler::schedule(std::vector<PCB>& processes) const {
     prepareProcesses(processes);
-    std::vector<SchedulingResult> results = makeResults(processes.size());
-    const std::vector<std::size_t> order = arrivalOrder(processes);
-    int currentTime = 0;
+    std::vector<SchedulingResult> results=makeResults(processes.size());
+    const std::vector<std::size_t> order=arrivalOrder(processes);
+    int currentTime=0;
 
     for (std::size_t index : order) {
-        PCB& process = processes[index];
+        PCB& process=processes[index];
         if (currentTime < process.arrivalTime) {
-            currentTime = process.arrivalTime;
+            currentTime=process.arrivalTime;
         }
 
         process.changeState(ProcessState::READY);
@@ -82,40 +82,40 @@ RoundRobinScheduler::RoundRobinScheduler(int quantum) : timeQuantum(quantum) {
 
 std::vector<SchedulingResult> RoundRobinScheduler::schedule(std::vector<PCB>& processes) const {
     prepareProcesses(processes);
-    std::vector<SchedulingResult> results = makeResults(processes.size());
-    const std::vector<std::size_t> order = arrivalOrder(processes);
+    std::vector<SchedulingResult> results=makeResults(processes.size());
+    const std::vector<std::size_t> order=arrivalOrder(processes);
     std::queue<std::size_t> readyQueue;
-    std::size_t nextArrival = 0;
-    std::size_t completed = 0;
-    int currentTime = 0;
+    std::size_t nextArrival=0;
+    std::size_t completed=0;
+    int currentTime=0;
 
     while (completed < processes.size()) {
         while (nextArrival < order.size() &&
                processes[order[nextArrival]].arrivalTime <= currentTime) {
-            const std::size_t index = order[nextArrival++];
+            const std::size_t index=order[nextArrival++];
             processes[index].changeState(ProcessState::READY);
             readyQueue.push(index);
         }
 
         if (readyQueue.empty()) {
             // No process is ready; jump to the next arrival rather than ticking idle time.
-            currentTime = processes[order[nextArrival]].arrivalTime;
+            currentTime=processes[order[nextArrival]].arrivalTime;
             continue;
         }
 
-        const std::size_t index = readyQueue.front();
+        const std::size_t index=readyQueue.front();
         readyQueue.pop();
-        PCB& process = processes[index];
+        PCB& process=processes[index];
         process.changeState(ProcessState::RUNNING);
 
-        const int runTime = std::min(timeQuantum, process.remainingTime);
+        const int runTime=std::min(timeQuantum, process.remainingTime);
         currentTime += runTime;
         process.updateRemainingTime(runTime);
 
         // Arrivals during this time slice join the queue before the preempted process.
         while (nextArrival < order.size() &&
                processes[order[nextArrival]].arrivalTime <= currentTime) {
-            const std::size_t arrivingIndex = order[nextArrival++];
+            const std::size_t arrivingIndex=order[nextArrival++];
             processes[arrivingIndex].changeState(ProcessState::READY);
             readyQueue.push(arrivingIndex);
         }
@@ -135,15 +135,15 @@ std::vector<SchedulingResult> RoundRobinScheduler::schedule(std::vector<PCB>& pr
 
 std::vector<SchedulingResult> PriorityScheduler::schedule(std::vector<PCB>& processes) const {
     prepareProcesses(processes);
-    std::vector<SchedulingResult> results = makeResults(processes.size());
+    std::vector<SchedulingResult> results=makeResults(processes.size());
     std::vector<bool> completed(processes.size(), false);
-    std::size_t completedCount = 0;
-    int currentTime = 0;
+    std::size_t completedCount=0;
+    int currentTime=0;
 
     while (completedCount < processes.size()) {
-        std::size_t selected = processes.size();
+        std::size_t selected=processes.size();
 
-        for (std::size_t index = 0; index < processes.size(); ++index) {
+        for (std::size_t index=0; index < processes.size(); ++index) {
             if (completed[index] || processes[index].arrivalTime > currentTime) {
                 continue;
             }
@@ -152,30 +152,30 @@ std::vector<SchedulingResult> PriorityScheduler::schedule(std::vector<PCB>& proc
                 processes[index].priority > processes[selected].priority ||
                 (processes[index].priority == processes[selected].priority &&
                  processes[index].arrivalTime < processes[selected].arrivalTime)) {
-                selected = index;
+                selected=index;
             }
         }
 
         if (selected == processes.size()) {
-            int nextTime = processes.size() > 0 ? processes[0].arrivalTime : 0;
-            for (std::size_t index = 0; index < processes.size(); ++index) {
+            int nextTime=processes.size() > 0 ? processes[0].arrivalTime : 0;
+            for (std::size_t index=0; index < processes.size(); ++index) {
                 if (!completed[index] &&
                     (nextTime <= currentTime || processes[index].arrivalTime < nextTime)) {
-                    nextTime = processes[index].arrivalTime;
+                    nextTime=processes[index].arrivalTime;
                 }
             }
-            currentTime = nextTime;
+            currentTime=nextTime;
             continue;
         }
 
-        PCB& process = processes[selected];
+        PCB& process=processes[selected];
         process.changeState(ProcessState::READY);
         process.changeState(ProcessState::RUNNING);
         currentTime += process.remainingTime;
         process.updateRemainingTime(process.remainingTime);
         process.changeState(ProcessState::COMPLETED);
         recordCompletion(process, selected, currentTime, results);
-        completed[selected] = true;
+        completed[selected]=true;
         ++completedCount;
     }
 
