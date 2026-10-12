@@ -1,7 +1,7 @@
 #include "ResourceManager.hpp"
 
 bool ResourceManager::addResource(const Resource& resource) {
-    if (resource.resourceID < 0 || resource.name.empty() || resource.totalUnits < 0 ||
+    if (resource.resourceID < 0||resource.name.empty()||resource.totalUnits < 0||
         resource.availableUnits != resource.totalUnits) {
         return false;
     }
@@ -10,7 +10,7 @@ bool ResourceManager::addResource(const Resource& resource) {
 }
 
 bool ResourceManager::hasAvailableUnits(int resourceID, int units) const {
-    if (units <= 0) {
+    if(units <= 0){
         return false;
     }
 
@@ -19,7 +19,7 @@ bool ResourceManager::hasAvailableUnits(int resourceID, int units) const {
 }
 
 bool ResourceManager::allocate(PCB& process, int resourceID, int units) {
-    if (!hasAvailableUnits(resourceID, units)) {
+    if(!hasAvailableUnits(resourceID,units)){
         return false;
     }
 
@@ -30,29 +30,29 @@ bool ResourceManager::allocate(PCB& process, int resourceID, int units) {
 }
 
 bool ResourceManager::release(PCB& process, int resourceID, int units) {
-    if (units <= 0) {
+    if(units <= 0){
         return false;
     }
 
     auto processAllocations = allocationsByProcess.find(process.processID);
-    if (processAllocations == allocationsByProcess.end()) {
+    if(processAllocations == allocationsByProcess.end()){
         return false;
     }
 
     auto resourceAllocation = processAllocations->second.find(resourceID);
     auto resource = resources.find(resourceID);
-    if (resourceAllocation == processAllocations->second.end() || resource == resources.end() ||
-        resourceAllocation->second < units || resource->second.availableUnits + units > resource->second.totalUnits) {
+    if(resourceAllocation == processAllocations->second.end()||resource == resources.end()||
+        resourceAllocation->second < units||resource->second.availableUnits + units > resource->second.totalUnits) {
         return false;
     }
 
     resourceAllocation->second -= units;
     resource->second.availableUnits += units;
 
-    if (resourceAllocation->second == 0) {
+    if(resourceAllocation->second == 0){
         processAllocations->second.erase(resourceAllocation);
     }
-    if (processAllocations->second.empty()) {
+    if(processAllocations->second.empty()){
         allocationsByProcess.erase(processAllocations);
     }
 
@@ -66,7 +66,7 @@ const Resource* ResourceManager::getResource(int resourceID) const {
 
 int ResourceManager::getAllocatedUnits(const PCB& process, int resourceID) const {
     const auto processAllocations = allocationsByProcess.find(process.processID);
-    if (processAllocations == allocationsByProcess.end()) {
+    if(processAllocations == allocationsByProcess.end()){
         return 0;
     }
 
