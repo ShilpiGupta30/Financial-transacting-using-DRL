@@ -1,5 +1,5 @@
 # Financial-transacting-using-DRL
-This project focuses on managing multiple financial transactions at the same time using operating system concepts and Deep Reinforcement Learning
+This project focuses on managing multiple financial transactions at the same time using operating system concepts and Deep Reinforcement Learning.
 
 The project demonstrates how OS resource management can affect concurrent financial transaction processing. Transactions will be represented as processes and managed through CPU scheduling, resource allocation, synchronization, and deadlock detection. The DBMS will maintain ACID properties and concurrency control.
 
