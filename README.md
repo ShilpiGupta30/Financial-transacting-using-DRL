@@ -1,4 +1,6 @@
 # Financial-transacting-using-DRL
+This project focuses on managing multiple financial transactions at the same time using operating system concepts and Deep Reinforcement Learning
+
 The project demonstrates how OS resource management can affect concurrent financial transaction processing. Transactions will be represented as processes and managed through CPU scheduling, resource allocation, synchronization, and deadlock detection. The DBMS will maintain ACID properties and concurrency control.
 
 **Phase 2 establishes the foundational components of the system**, including a C++17 core engine, process management, CPU scheduling, resource allocation, synchronization mechanisms, unit tests, and an initial relational database schema.
@@ -7,7 +9,7 @@ The current implementation provides the foundation on which future phases can in
 
 ## 2. Objectives
 
-The main objectives are:
+The main objectives of Phase 2 are:
 
 - Model financial transactions as processes with identifiable execution states.
 - Implement CPU scheduling algorithms for managing concurrent transaction workloads.
@@ -16,6 +18,7 @@ The main objectives are:
 - Establish a relational database foundation for project data.
 - Validate core functionality through modular C++ tests.
 - Create an extensible architecture for future Deep Reinforcement Learning integration.
+- The scheduling module provides the foundation for deciding which transaction process should receive CPU time.”
 
 ## 3. Technology Stack
 
@@ -51,7 +54,7 @@ The PCB model provides a foundation for tracking process information and managin
 
 ### 4.2 CPU Scheduling
 
-The scheduling module provides the foundation for deciding which transaction process should receive CPU time.
+The scheduling module decides which transaction process gets CPU time based on the selected scheduling algorithm.
 
 The engine includes CPU scheduling functionality intended to support different scheduling strategies and enable comparison of transaction execution behavior.
 
@@ -69,7 +72,7 @@ The scheduling module can later serve as a baseline for evaluating a DRL-based s
 
 ### 4.3 Resource Management
 
-The resource-management module provides functionality for managing resources required by transaction processes.
+The resource management module handles the allocation and release of resources needed by transaction processes.
 
 Its purpose is to establish a structured interface for resource allocation and release and to provide a foundation for handling resource constraints during concurrent execution.
 
@@ -267,5 +270,4 @@ Phase 2 establishes the foundational software components for an intelligent reso
 
 The current work covers a C++17 process model, CPU scheduling, resource-management interfaces, synchronization mechanisms, modular tests, and an initial SQL database foundation.
 
-These components provide a starting point for the next stage: integrating and evaluating a Deep Reinforcement Learning-based resource-management policy against conventional scheduling approaches.
-
+These components will be used in the next phase to integrate the DRL scheduler and compare its performance with traditional scheduling algorithms.
